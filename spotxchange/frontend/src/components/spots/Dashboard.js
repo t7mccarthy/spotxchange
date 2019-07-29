@@ -1,6 +1,7 @@
 import React, { Fragment, PropTypes } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Spots from "./Spots";
+import Form from "./Form";
 import MapContainer from "./MapContainer";
 
 export default function Dashboard() {
@@ -11,6 +12,7 @@ export default function Dashboard() {
         <Spots />
       </Col>
       <Col>
+        <Form />
         <MapContainer />
       </Col>
     </Row>
