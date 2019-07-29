@@ -16,7 +16,14 @@ export class Form extends Component {
       day = "0" + day;
     }
     var hour = today.getHours().toString();
+    if (hour.length == 1) {
+      hour = "0" + hour;
+    }
     var minute = today.getMinutes().toString();
+    if (minute.length == 1) {
+      minute = "0" + minute;
+    }
+    console.log(year + "-" + month + "-" + day + "T" + hour + ":" + minute);
     return year + "-" + month + "-" + day + "T" + hour + ":" + minute;
   }
 
