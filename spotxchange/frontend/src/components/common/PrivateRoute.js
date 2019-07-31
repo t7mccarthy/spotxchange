@@ -8,7 +8,20 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => (
     {...rest}
     render={props => {
       if (auth.isLoading) {
-        return <h2>Loading...</h2>;
+        return (
+          <div className="text-center">
+            <div
+              className="spinner-border"
+              style={{ width: 70, height: 70 }}
+              role="status"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div style={{ paddingTop: 30 }}>
+              <strong>Loading...</strong>
+            </div>
+          </div>
+        );
       } else if (!auth.isAuthenticated) {
         return <Redirect to="/login" />;
       } else {
