@@ -1,4 +1,5 @@
 import axios from "axios";
+import { createMessage, returnErrors } from "./messages";
 
 import { GET_SPOTS, BUY_SPOT, ADD_SPOT } from "./types";
 
@@ -12,7 +13,9 @@ export const getSpots = () => dispatch => {
         payload: res.data
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 // BUY SPOT
@@ -20,6 +23,7 @@ export const buySpot = id => dispatch => {
   axios
     .delete(`/api/spots/${id}`)
     .then(res => {
+      dispatch(createMessage({ buySpot: "Spot Purchased" }));
       dispatch({
         type: BUY_SPOT,
         payload: id
@@ -33,10 +37,14 @@ export const addSpot = spot => dispatch => {
   axios
     .post("/api/spots/", spot)
     .then(res => {
+      dispatch(createMessage({ addSpot: "Spot Published" }));
+      location.reload();
       dispatch({
         type: ADD_SPOT,
         payload: res.data
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export class Header extends Component {
   render() {
@@ -49,25 +50,32 @@ export class Header extends Component {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
+                Spots
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">
                 Exchange
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Profile
+                History
               </a>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
-            <input
-              className="form-control mr-sm-2"
-              type="text"
-              placeholder="Search"
-            />
-            <button className="btn btn-secondary my-2 my-sm-0" type="submit">
-              Search
-            </button>
-          </form>
+          <ul className="navbar-nav my-2 my-lg-0">
+            <li className="nav-item">
+              <Link to="/register" className="nav-link" href="#">
+                Register
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/login" className="nav-link" href="#">
+                Login
+              </Link>
+            </li>
+          </ul>
         </div>
       </nav>
     );

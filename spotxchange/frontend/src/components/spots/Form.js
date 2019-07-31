@@ -23,7 +23,6 @@ export class Form extends Component {
     if (minute.length == 1) {
       minute = "0" + minute;
     }
-    console.log(year + "-" + month + "-" + day + "T" + hour + ":" + minute);
     return year + "-" + month + "-" + day + "T" + hour + ":" + minute;
   }
 
@@ -47,7 +46,15 @@ export class Form extends Component {
     const { host, place, seats, message, open_at, price } = this.state;
     const spot = { host, place, seats, message, open_at, price };
     this.props.addSpot(spot);
-    location.reload();
+    this.setState({
+      host: "",
+      place: "",
+      seats: 1,
+      message: "",
+      open_at: this.getDateTime(),
+      price: 10
+    });
+    // location.reload();
   };
 
   render() {
