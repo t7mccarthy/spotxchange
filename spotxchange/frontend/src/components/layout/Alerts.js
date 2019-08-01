@@ -15,10 +15,15 @@ export class Alerts extends Component {
       if (error.msg.place) alert.error(`Place: ${error.msg.place.join()}`);
       if (error.msg.message)
         alert.error(`Description: ${error.msg.message.join()}`);
+      if (error.msg.non_field_errors)
+        alert.error(error.msg.non_field_errors.join());
+      if (error.msg.username) alert.error(error.username.join());
     }
 
     if (message != prevProps.message) {
       if (message.buySpot) alert.success(message.buySpot);
+      if (message.addSpot) alert.success(message.addSpot);
+      if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
     }
   }
   render() {
