@@ -50,7 +50,8 @@ export class Spots extends Component {
   static propTypes = {
     spots: PropTypes.array.isRequired,
     getSpots: PropTypes.func.isRequired,
-    buySpot: PropTypes.func.isRequired
+    buySpot: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -58,34 +59,66 @@ export class Spots extends Component {
   }
 
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+    var name = user.username;
+
+    const someone_elses = spot => (
+      <a
+        href="#"
+        className="list-group-item list-group-item-action flex-column align-items-start"
+      >
+        <div className="d-flex w-100 justify-content-between">
+          <h5 className="mb-1">
+            {spot.seats} <Plural seats={spot.seats} /> {spot.place}
+          </h5>
+          <button
+            onClick={this.props.buySpot.bind(this, spot.id)}
+            type="button"
+            className="btn btn-primary btn-sm"
+          >
+            {" "}
+            Buy for ₴{spot.price}{" "}
+          </button>
+        </div>
+        <p className="mb-1">Host's Description: {spot.message}</p>
+        <small className="text-muted">
+          Available from {spot.host} at <FormatTime time={spot.open_at} />.
+        </small>
+      </a>
+    );
+
+    const mine = spot => (
+      <a
+        href="#"
+        className="list-group-item list-group-item-action flex-column align-items-start active"
+      >
+        <div className="d-flex w-100 justify-content-between">
+          <h5 className="mb-1">
+            Selling {spot.seats} <Plural seats={spot.seats} /> {spot.place}
+          </h5>
+          <button
+            onClick={this.props.buySpot.bind(this, spot.id)}
+            type="button"
+            className="btn btn-danger btn-sm"
+          >
+            {" "}
+            Cancel Spot{" "}
+          </button>
+        </div>
+        <p className="mb-1">Host's Description: {spot.message}</p>
+        <small className="text-muted">
+          Exchanging at <FormatTime time={spot.open_at} /> for ₴{spot.price}{" "}
+        </small>
+      </a>
+    );
+
     return (
       <Fragment>
         <div className="list-group">
           {this.props.spots.map(spot => (
-            <a
-              href="#"
-              className="list-group-item list-group-item-action flex-column align-items-start"
-              key={spot.id}
-            >
-              <div className="d-flex w-100 justify-content-between">
-                <h5 className="mb-1">
-                  {spot.seats} <Plural seats={spot.seats} /> {spot.place}
-                </h5>
-                <button
-                  onClick={this.props.buySpot.bind(this, spot.id)}
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                >
-                  {" "}
-                  Buy for ₴{spot.price}{" "}
-                </button>
-              </div>
-              <p className="mb-1">Host's Description: {spot.message}</p>
-              <small className="text-muted">
-                Available from {spot.host} at <FormatTime time={spot.open_at} />
-                .
-              </small>
-            </a>
+            <div key={spot.id}>
+              {name == spot.host ? mine(spot) : someone_elses(spot)}
+            </div>
           ))}
         </div>
       </Fragment>
@@ -96,7 +129,8 @@ export class Spots extends Component {
 // <!-- <small className="text-muted">₴{spot.price}</small> -->
 
 const mapStateToProps = state => ({
-  spots: state.spots.spots
+  spots: state.spots.spots,
+  auth: state.auth
 });
 
 export default connect(

@@ -12,7 +12,6 @@ export default function Dashboard() {
         <Spots />
       </Col>
       <Col>
-        <Form />
         <MapContainer />
       </Col>
     </Row>

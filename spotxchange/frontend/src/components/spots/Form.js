@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { addSpot } from "../../actions/spots";
 
@@ -26,18 +27,32 @@ export class Form extends Component {
     return year + "-" + month + "-" + day + "T" + hour + ":" + minute;
   }
 
+  static propTypes = {
+    auth: PropTypes.object.isRequired,
+    addSpot: PropTypes.func.isRequired
+  };
+
   state = {
     host: "",
     place: "",
-    seats: 1,
+    seats: "",
     message: "",
-    open_at: this.getDateTime(),
-    price: 10
+    open_at: "",
+    price: "10"
   };
 
-  static propTypes = {
-    addSpot: PropTypes.func.isRequired
-  };
+  componentDidMount() {
+    const { isAuthenticated, user } = this.props.auth;
+    var name = user.username;
+    this.setState({
+      host: name,
+      place: "",
+      seats: 1,
+      message: "",
+      open_at: this.getDateTime(),
+      price: 10
+    });
+  }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -54,92 +69,101 @@ export class Form extends Component {
       open_at: this.getDateTime(),
       price: 10
     });
+    return <Redirect to="/" />;
     // location.reload();
   };
 
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+    var name = user.username;
     const { host, place, seats, message, open_at, price } = this.state;
     return (
-      <div>
-        <h2>Exchange Spots</h2>
-        <form onSubmit={this.onSubmit}>
-          <fieldset>
-            <div className="form-group">
-              <label>Host</label>
-              <input
-                type="text"
-                className="form-control"
-                name="host"
-                onChange={this.onChange}
-                value={host}
-              />
-            </div>
-            <div className="form-group">
-              <label>Place</label>
-              <input
-                type="text"
-                className="form-control"
-                name="place"
-                onChange={this.onChange}
-                value={place}
-              />
-            </div>
-            <div className="form-group">
-              <label>Number of Seats</label>
-              <input
-                type="number"
-                className="form-control"
-                name="seats"
-                onChange={this.onChange}
-                value={seats}
-              />
-            </div>
-            <div className="form-group">
-              <label>Time Available</label>
-              <input
-                className="form-control"
-                type="datetime-local"
-                name="open_at"
-                onChange={this.onChange}
-                value={open_at}
-              />
-            </div>
-            <div className="form-group">
-              <label>Spot Description</label>
-              <textarea
-                rows="2"
-                className="form-control"
-                name="message"
-                onChange={this.onChange}
-                value={message}
-                placeholder="Tell everyone a little about your spot..."
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label>Price</label>
-              <input
-                type="number"
-                className="form-control"
-                name="price"
-                onChange={this.onChange}
-                value={price}
-              />
-            </div>
-            <center>
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+      <div className="col-md-6 m-auto" style={{ paddingBottom: 100 }}>
+        <div className="card card-body mt-5">
+          <h2>Exchange Spots</h2>
+          <form onSubmit={this.onSubmit}>
+            <fieldset>
+              <div hidden className="form-group">
+                <label>Host</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="host"
+                  onChange={this.onChange}
+                  value={host}
+                />
               </div>
-            </center>
-          </fieldset>
-        </form>
+              <div className="form-group">
+                <label>Place</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="place"
+                  onChange={this.onChange}
+                  value={place}
+                />
+              </div>
+              <div className="form-group">
+                <label>Number of Seats</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="seats"
+                  onChange={this.onChange}
+                  value={seats}
+                />
+              </div>
+              <div className="form-group">
+                <label>Time Available</label>
+                <input
+                  className="form-control"
+                  type="datetime-local"
+                  name="open_at"
+                  onChange={this.onChange}
+                  value={open_at}
+                />
+              </div>
+              <div className="form-group">
+                <label>Spot Description</label>
+                <textarea
+                  rows="2"
+                  className="form-control"
+                  name="message"
+                  onChange={this.onChange}
+                  value={message}
+                  placeholder="Tell everyone a little about your spot..."
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label>Price</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="price"
+                  onChange={this.onChange}
+                  value={price}
+                />
+              </div>
+              <center>
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </center>
+            </fieldset>
+          </form>
+        </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { addSpot }
 )(Form);

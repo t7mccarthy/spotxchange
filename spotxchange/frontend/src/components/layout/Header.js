@@ -3,25 +3,39 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
+import { getProfile } from "../../actions/profile";
 
 export class Header extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    getProfile: PropTypes.func.isRequired,
+    profile: PropTypes.array.isRequired
   };
+
+  componentDidMount() {
+    const { isAuthenticated, user } = this.props.auth;
+    this.props.getProfile();
+  }
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-
+    // var profile = console.log(this.props.profile[0]);
+    // var profile = this.props.getProfile(user.username);
     const authLinks = (
       <ul className="navbar-nav my-2 my-lg-0">
         <span className="navbar-text mr-3">
-          <strong>{user ? `Welcome ${user.username}` : ""}</strong>
+          <strong>
+            {user ? `${user.username}: ` : ""}
+            {this.props.profile[0]
+              ? `₴${this.props.profile[0]["balance"]}`
+              : ""}
+          </strong>
         </span>
         <li className="nav-item">
           <button
             onClick={this.props.logout}
-            className="nav-link btn btn-info btn-sm text-light"
+            className="nav-link btn btn-link btn-sm"
           >
             Logout
           </button>
@@ -63,9 +77,9 @@ export class Header extends Component {
 
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
+            <li className="nav-item">
               <a className="nav-link" href="#">
-                Explore <span className="sr-only">(current)</span>
+                Explore
               </a>
             </li>
             <li className="nav-item">
@@ -74,9 +88,9 @@ export class Header extends Component {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link to="/exchange_spot" className="nav-link" href="#">
                 Exchange
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
@@ -92,10 +106,11 @@ export class Header extends Component {
 }
 
 const mapStateToProps = state => ({
+  profile: state.profile.profile,
   auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, getProfile }
 )(Header);
