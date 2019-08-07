@@ -1,4 +1,4 @@
-import { GET_PROFILE, CHANGE_BALANCE } from "../actions/types.js";
+import { GET_PROFILE, UPDATE_PROFILE } from "../actions/types.js";
 
 const initialState = {
   profile: []
@@ -12,11 +12,13 @@ export default function(state = initialState, action) {
         ...state,
         profile: action.payload
       };
-    // case CHANGE_BALANCE:
-    //   return {
-    //     ...state,
-    //     profile: [...state.profile, action.payload]
-    //   };
+    case UPDATE_PROFILE:
+      console.log("payload", action.payload);
+      return {
+        ...state,
+        profile: action.payload
+      };
+
     default:
       return state;
   }

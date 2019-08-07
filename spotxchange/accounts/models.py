@@ -22,7 +22,8 @@ def save_user_profile(sender, instance, **kwargs):
 # - get get_profile working
 # - get change_balance working
 # - set up real buy action
-# - set up profle and history
+# - set up profle and history, update location
+# __________go back home____________
 # - integrate with google maps api
 # - switch to postgres
 # - deploy to heroku

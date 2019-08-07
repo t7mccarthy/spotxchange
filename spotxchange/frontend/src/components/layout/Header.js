@@ -18,6 +18,15 @@ export class Header extends Component {
     this.props.getProfile();
   }
 
+  check_reload(isAuthenticated, profile) {
+    if (isAuthenticated) {
+      if (!profile) {
+        // location.reload();
+        return;
+      }
+    }
+  }
+
   render() {
     const { isAuthenticated, user } = this.props.auth;
     // var profile = console.log(this.props.profile[0]);
@@ -30,6 +39,7 @@ export class Header extends Component {
             {this.props.profile[0]
               ? `₴${this.props.profile[0]["balance"]}`
               : ""}
+            {this.check_reload(isAuthenticated, this.props.profile[0])}
           </strong>
         </span>
         <li className="nav-item">

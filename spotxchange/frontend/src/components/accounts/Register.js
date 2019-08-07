@@ -31,6 +31,7 @@ export class Register extends Component {
       };
       this.props.register(newUser);
     }
+    return <Redirect to="/" />;
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });

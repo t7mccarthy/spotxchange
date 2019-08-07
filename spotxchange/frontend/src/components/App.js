@@ -17,6 +17,7 @@ import Alerts from "./layout/Alerts";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import PrivateRoute from "./common/PrivateRoute";
+import ProfileEdit from "./spots/ProfileEdit";
 
 import { Provider } from "react-redux";
 import store from "../store";
