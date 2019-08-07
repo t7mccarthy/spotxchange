@@ -36,14 +36,10 @@ export class ProfileEdit extends Component {
 
   onSubmit = e => {
     // this.props.updateProfile(this.props.match.params.id, formValues);
-    console.log("logging profile", this.props.profile);
-    console.log("logging get_profile", this.props.getProfile());
-    console.log("logging state", this.state);
 
     e.preventDefault();
     const { user, location, balance } = this.state;
     var id = this.props.profile[0]["id"];
-    console.log("logging id", id);
     const profile = { id, user, location, balance };
     this.props.updateProfile(id, profile);
     this.setState({

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getSpots, buySpot } from "../../actions/spots";
+import { getSpots, buySpot, deleteSpot } from "../../actions/spots";
 
 function Plural(props) {
   const seats = props.seats;
@@ -58,6 +58,36 @@ export class Spots extends Component {
     this.props.getSpots();
   }
 
+  updateSpot(spot, user_id) {
+    const {
+      id,
+      host,
+      place,
+      seats,
+      message,
+      owner,
+      open_at,
+      created_at,
+      price
+    } = spot;
+    var active = false;
+    var buyer = user_id;
+    const new_spot = {
+      id,
+      host,
+      place,
+      seats,
+      message,
+      owner,
+      buyer,
+      active,
+      open_at,
+      created_at,
+      price
+    };
+    this.props.buySpot(spot.id, new_spot);
+  }
+
   render() {
     const { isAuthenticated, user } = this.props.auth;
     var name = user.username;
@@ -72,7 +102,8 @@ export class Spots extends Component {
             {spot.seats} <Plural seats={spot.seats} /> {spot.place}
           </h5>
           <button
-            onClick={this.props.buySpot.bind(this, spot.id)}
+            // onClick={this.props.buySpot.bind(this, spot.id)}
+            onClick={this.updateSpot.bind(this, spot, user.id)}
             type="button"
             className="btn btn-primary btn-sm"
           >
@@ -97,7 +128,7 @@ export class Spots extends Component {
             Selling {spot.seats} <Plural seats={spot.seats} /> {spot.place}
           </h5>
           <button
-            onClick={this.props.buySpot.bind(this, spot.id)}
+            onClick={this.props.deleteSpot.bind(this, spot.id)}
             type="button"
             className="btn btn-danger btn-sm"
           >
@@ -135,5 +166,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSpots, buySpot }
+  { getSpots, buySpot, deleteSpot }
 )(Spots);

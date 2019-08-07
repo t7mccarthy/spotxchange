@@ -22,6 +22,7 @@ export class Alerts extends Component {
 
     if (message != prevProps.message) {
       if (message.buySpot) alert.success(message.buySpot);
+      if (message.deleteSpot) alert.success(message.deleteSpot);
       if (message.addSpot) alert.success(message.addSpot);
       if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
     }
