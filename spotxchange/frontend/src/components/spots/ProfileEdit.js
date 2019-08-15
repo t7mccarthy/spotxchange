@@ -41,7 +41,7 @@ export class ProfileEdit extends Component {
     const { user, location, balance } = this.state;
     var id = this.props.profile[0]["id"];
     const profile = { id, user, location, balance };
-    this.props.updateProfile(id, profile);
+    this.props.updateProfile(user, profile);
     this.setState({
       user: "",
       location: "",

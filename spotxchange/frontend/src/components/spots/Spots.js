@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getSpots, buySpot, deleteSpot } from "../../actions/spots";
+import { getProfile, updateProfile } from "../../actions/profile";
+
 
 function Plural(props) {
   const seats = props.seats;
@@ -51,14 +53,19 @@ export class Spots extends Component {
     spots: PropTypes.array.isRequired,
     getSpots: PropTypes.func.isRequired,
     buySpot: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    updateProfile: PropTypes.func.isRequired,
+    getProfile: PropTypes.func.isRequired
+    // profile: PropTypes.array.isRequired
   };
 
   componentDidMount() {
     this.props.getSpots();
+    this.props.getProfile();
   }
 
   updateSpot(spot, user_id) {
+    console.log("updating")
     const {
       id,
       host,
@@ -85,6 +92,11 @@ export class Spots extends Component {
       created_at,
       price
     };
+    // TODO: check if user has high enough balance to purchase
+    const buy_profile = { user: buyer, balance: -1 * price };
+    this.props.updateProfile(buyer, buy_profile);
+    const sell_profile = { user: owner, balance: price };
+    this.props.updateProfile(owner, sell_profile);
     this.props.buySpot(spot.id, new_spot);
   }
 
@@ -136,7 +148,7 @@ export class Spots extends Component {
             Cancel Spot{" "}
           </button>
         </div>
-        <p className="mb-1">Host's Description: {spot.message}</p>
+        <p className="mb-1">Your Description: {spot.message}</p>
         <small className="text-muted">
           Exchanging at <FormatTime time={spot.open_at} /> for ₴{spot.price}{" "}
         </small>
@@ -166,5 +178,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSpots, buySpot, deleteSpot }
+  { getSpots, buySpot, deleteSpot, getProfile, updateProfile }
 )(Spots);

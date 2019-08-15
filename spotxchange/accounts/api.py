@@ -71,11 +71,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
 # Change Balance API
 class ProfileUpdateAPI(generics.GenericAPIView):
     def put(self, request, pk, format=None):
-        print("data", request.data)
-        profile = Profile.objects.get(id=pk)
-        print("profile", profile)
-        serializer = ProfileSerializer(profile, data=request.data['profile'])
-        print("serializer", serializer)
+        profile = Profile.objects.get(user_id=pk)
+        update = request.data['profile']
+        update['balance'] = str(int(update['balance']) + profile.balance)
+        serializer = ProfileSerializer(profile, data=update)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
