@@ -1,10 +1,10 @@
 -i https://pypi.org/simple/
-cffi==1.13.2
+cffi==1.14.0
 cryptography==2.8
 django-rest-knox==4.1.0
-django==2.2.8
+django==2.2.10
 djangorestframework==3.10.1
 pycparser==2.19
 pytz==2019.3
-six==1.13.0
+six==1.14.0
 sqlparse==0.3.0
